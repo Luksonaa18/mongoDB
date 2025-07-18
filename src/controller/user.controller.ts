@@ -1,20 +1,11 @@
 import mongoose from "mongoose";
-import { Todo } from "../module/user-module";
+import { Todo } from "../module/user.module";
 import { Request, Response } from "express";
-
-export const CreateUser = async (req: Request, res: Response) => {
-  try {
-    await Todo.create(req.body);
-    res.status(201).json({ message: "User Created successfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: "Bad Request" });
-  }
-};
 
 export const getUses = async (_: Request, res: Response) => {
   try {
     const users = await Todo.find();
+    const use = users.map(({ password, ...rest }) => rest);
     res.status(200).json(users);
   } catch (error) {
     console.log(error);
@@ -53,6 +44,6 @@ export const updateTask = async (req: Request, res: Response) => {
     res.status(200).json(updatedTask);
   } catch (error) {
     console.log(error);
-    res.status(400).json({ message: "Bad Request" });
+    res.status(400).json({ message: "Bad Request", error });
   }
 };
